@@ -1,7 +1,7 @@
-package Homewrok.Controller;
+package ru.hogwarts.controller;
 
-import Homewrok.Model.Faculty;
-import Homewrok.Service.FacultyService;
+import ru.hogwarts.model.Faculty;
+import ru.hogwarts.service.FacultyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping()
+    @GetMapping("{id}")
     public ResponseEntity getFacultyInfo(@PathVariable Long id) {
         Faculty faculty = facultyService.findFaculty(id);
         if (faculty == null) {
@@ -27,13 +27,12 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-
-    @PostMapping
+    @PostMapping()
     public Faculty createFaculty(@RequestBody Faculty faculty) {
         return facultyService.createFaculty(faculty);
     }
 
-    @PutMapping
+    @PutMapping()
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
@@ -42,7 +41,7 @@ public class FacultyController {
         return ResponseEntity.ok(foundFaculty);
     }
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<Collection<Faculty>> getAllFaculties() {
         return ResponseEntity.ok(facultyService.getAllFaculties());
     }

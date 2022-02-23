@@ -1,7 +1,8 @@
-package Homewrok.Service;
+package ru.hogwarts.service;
 
-import Homewrok.Model.Faculty;
+import ru.hogwarts.model.Faculty;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class FacultyService {
     private Map<Long, Faculty> faculties = new HashMap<>();
     private long lastId = 0;
@@ -26,6 +28,7 @@ public class FacultyService {
     public Faculty editFaculty(Faculty faculty) {
         if (faculties.containsKey(faculty.getId())) {
             faculties.put(faculty.getId(), faculty);
+            return faculty;
         }
         return null;
     }
@@ -36,7 +39,6 @@ public class FacultyService {
 
     public Collection<Faculty> getAllFaculties() {
         return faculties.values();
-
     }
 
     public ResponseEntity<List<Faculty>> getFacultyByColor(String color) {

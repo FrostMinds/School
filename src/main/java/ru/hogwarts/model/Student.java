@@ -1,11 +1,11 @@
-package Homewrok.Model;
+package ru.hogwarts.model;
 
 import java.util.Objects;
 
 public class Student {
-    Long id;
-    String name;
-    Integer age;
+    private Long id;
+    private String name;
+    private Integer age;
 
     private Student(Long id, String name, Integer age) {
         this.id = id;

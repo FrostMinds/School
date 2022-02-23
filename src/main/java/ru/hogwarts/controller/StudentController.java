@@ -1,7 +1,7 @@
-package Homewrok.Controller;
+package ru.hogwarts.controller;
 
-import Homewrok.Model.Student;
-import Homewrok.Service.StudentService;
+import ru.hogwarts.model.Student;
+import ru.hogwarts.service.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("students")
+@RequestMapping("student")
 public class StudentController {
 
     private final StudentService studentService;
@@ -18,7 +18,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping()
+    @GetMapping("{id}")
     public ResponseEntity getStudentInfo(@PathVariable Long id) {
         Student student = studentService.findStudent(id);
         if (student == null) {
@@ -27,12 +27,12 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @PostMapping
+    @PostMapping()
     public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
-    @PutMapping
+    @PutMapping()
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
         Student foundStudent = studentService.editStudent(student);
         if (foundStudent == null) {
@@ -41,7 +41,7 @@ public class StudentController {
         return ResponseEntity.ok(foundStudent);
     }
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }

@@ -1,7 +1,8 @@
-package Homewrok.Service;
+package ru.hogwarts.service;
 
-import Homewrok.Model.Student;
+import ru.hogwarts.model.Student;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class StudentService {
     private Map<Long, Student> students = new HashMap<>();
     private long lastId = 0;
