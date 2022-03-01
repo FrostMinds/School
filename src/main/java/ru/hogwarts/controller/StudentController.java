@@ -46,9 +46,10 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @DeleteMapping()
-    public Student deleteStudent(@PathVariable Long id) {
-        return studentService.deleteStudent(id);
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteStudent(@PathVariable Long id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("filter/{age}")

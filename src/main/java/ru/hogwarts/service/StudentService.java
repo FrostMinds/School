@@ -3,48 +3,42 @@ package ru.hogwarts.service;
 import ru.hogwarts.model.Student;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.repositories.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    private Map<Long, Student> students = new HashMap<>();
-    private long lastId = 0;
+
+    private StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(lastId, student);
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student findStudent(long id) {
-        return students.get(id);
+        return studentRepository.findById(id).get();
     }
 
     public Student editStudent(Student student) {
-        if (students.containsKey(student.getId())){
-            students.put(student.getId(), student);
-            return student;
-        }
-        return null;
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(long id) {
-        return students.remove(id);
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
     }
 
     public Collection<Student> getAllStudents() {
-        return students.values();
+        return studentRepository.findAll();
     }
 
     public ResponseEntity<List<Student>> getStudentsByAge(int age) {
-        List<Student> studentList = students.values().stream()
-                .filter(student -> student.getAge() == age)
-                .collect(Collectors.toList());
+        List<Student> studentList = studentRepository.findByAge(age);
         if (studentList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
