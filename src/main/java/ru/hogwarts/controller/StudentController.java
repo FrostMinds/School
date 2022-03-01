@@ -56,4 +56,9 @@ public class StudentController {
     public ResponseEntity<List<Student>> getStudents(@PathVariable int age) {
         return studentService.getStudentsByAge(age);
     }
+
+    @GetMapping("filter")
+    public ResponseEntity<List<Student>> getStudents(@RequestParam int minAge, @RequestParam int maxAge) {
+        return studentService.findByAgeBetween(minAge, maxAge);
+    }
 }
