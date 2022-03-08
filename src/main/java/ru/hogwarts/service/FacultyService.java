@@ -44,4 +44,13 @@ public class FacultyService {
         }
         return ResponseEntity.ok(facultyList);
     }
-}
+
+        public ResponseEntity<List<Faculty>> findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(String facultyFilter) {
+            List<Faculty> facultyList = facultyRepository.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter, facultyFilter);
+            if (facultyList.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(facultyList);
+        }
+
+    }
