@@ -61,4 +61,19 @@ public class StudentController {
     public ResponseEntity<List<Student>> getStudents(@RequestParam int minAge, @RequestParam int maxAge) {
         return studentService.findByAgeBetween(minAge, maxAge);
     }
+
+    @GetMapping("count-all")
+    public ResponseEntity<Long> getAmountOfAllStudents() {
+        return studentService.getAmountOfAllStudents();
+    }
+
+    @GetMapping("average-age")
+    public ResponseEntity<Double> getAverageAgeOfAllStudents() {
+        return studentService.getAverageAgeOfAllStudents();
+    }
+
+    @GetMapping("last5")
+    public ResponseEntity<Collection<Student>> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
+    }
 }
