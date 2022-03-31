@@ -9,6 +9,7 @@ import ru.hogwarts.repositories.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -91,5 +92,28 @@ public class StudentService {
         }
         logger.debug("List of last five added students: {}", studentList);
         return ResponseEntity.ok(studentList);
+    }
+
+    public Collection<String> getStudentNamesByFirstLetter(String chr) {
+        return studentRepository.findAll()
+                .stream()
+                .map(Student::getName)
+                .filter(s -> s.substring(0, 1)
+                        .toUpperCase().
+                        equals(chr.toUpperCase())).
+                map(s -> s.toUpperCase()).
+                sorted().
+                collect(Collectors.toList());
+    }
+
+    public ResponseEntity<Double> getAverageAgeOfAllStudentsUsingStream() {
+        return studentRepository.findAll().
+                stream().
+                mapToInt(Student::getAge).
+                average().
+                stream().
+                mapToObj(ResponseEntity::ok).
+                findFirst().
+                orElse(ResponseEntity.notFound().build());
     }
 }

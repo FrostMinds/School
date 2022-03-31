@@ -60,6 +60,11 @@ public class FacultyController {
     @GetMapping("filter")
     public ResponseEntity<List<Faculty>>
     getFacultiesByNameOrColor(@RequestParam String facultyFilter) {
-            return facultyService.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter);
-        }
+        return facultyService.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter);
     }
+
+    @GetMapping("max-name")
+    public ResponseEntity<String> getFacultyNameWithMaxLength() {
+        return facultyService.getFacultyNameWithMaxLength();
+    }
+}

@@ -8,7 +8,9 @@ import ru.hogwarts.model.Faculty;
 import ru.hogwarts.repositories.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -69,6 +71,18 @@ public class FacultyService {
         }
         logger.debug("List of faculties with name or color containing {} wit ignoring case: {}", facultyFilter, facultyList);
         return ResponseEntity.ok(facultyList);
+    }
+
+    public ResponseEntity<String> getFacultyNameWithMaxLength() {
+        Collection<Faculty> facultyList = facultyRepository.findAll();
+        Optional<String> maxFacultyName = facultyList.stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length));
+        if (maxFacultyName.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(maxFacultyName.get());
+        }
     }
 
 }
