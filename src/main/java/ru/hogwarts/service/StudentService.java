@@ -95,11 +95,11 @@ public class StudentService {
     }
 
     public Collection<String> getStudentNamesByFirstLetter(String chr) {
-        return studentRepository.findAll()
-                .stream()
-                .map(Student::getName)
-                .filter(s -> s.substring(0, 1)
-                        .toUpperCase().
+        return studentRepository.findAll().
+                stream().
+                map(Student::getName).
+                filter(s -> s.substring(0, 1).
+                        toUpperCase().
                         equals(chr.toUpperCase())).
                 map(s -> s.toUpperCase()).
                 sorted().
