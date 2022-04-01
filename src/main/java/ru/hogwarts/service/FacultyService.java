@@ -62,15 +62,15 @@ public class FacultyService {
         return ResponseEntity.ok(facultyList);
     }
 
-    public ResponseEntity<List<Faculty>> findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(String facultyFilter) {
+    public List<Faculty> findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(String facultyFilter) {
         logger.info("Method to search all faculties with name or color contain {} case insensitive launched", facultyFilter);
         List<Faculty> facultyList = facultyRepository.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter, facultyFilter);
         if (facultyList.isEmpty()) {
             logger.error("Faculty with name or inclusion color {} case insensitive is missing", facultyFilter);
-            return ResponseEntity.notFound().build();
+            return facultyList;
         }
         logger.debug("List of faculties with name or color containing {} wit ignoring case: {}", facultyFilter, facultyList);
-        return ResponseEntity.ok(facultyList);
+        return facultyList;
     }
 
     public ResponseEntity<String> getFacultyNameWithMaxLength() {
