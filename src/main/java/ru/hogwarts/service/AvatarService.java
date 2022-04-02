@@ -1,6 +1,7 @@
 package ru.hogwarts.service;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,8 @@ public class AvatarService {
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     public AvatarService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
         this.avatarRepository = avatarRepository;
@@ -36,6 +39,8 @@ public class AvatarService {
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentRepository.getById(studentId);
+
+        logger.info("Student avatar upload method has been started");
 
         Path filePath = Path.of(avatarsDirectory, studentId + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -55,13 +60,17 @@ public class AvatarService {
         avatar.setMediaType(avatarFile.getContentType());
 
         avatarRepository.save(avatar);
+
+        logger.debug("Student's {} avatar has been uploaded", student);
     }
 
     public Avatar findAvatar(Long studentId) {
+        logger.info("Launched a method to search for a student avatar by id {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     private String getExtensions(String fileName) {
+        logger.info("Launched avatar file extension method");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
@@ -69,8 +78,10 @@ public class AvatarService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         Collection<Avatar> avatarsList = avatarRepository.findAll(pageRequest).getContent();
         if (avatarsList.isEmpty()) {
+            logger.error("There is no avatars at all");
             return ResponseEntity.notFound().build();
         }
+        logger.debug("List of all avatars (page number= {}, page size={}): {}", avatarsList, pageNumber, pageSize);
         return ResponseEntity.ok(avatarsList);
     }
 }
