@@ -53,27 +53,37 @@ public class StudentController {
     }
 
     @GetMapping("filter/{age}")
-    public ResponseEntity<List<Student>> getStudents(@PathVariable int age) {
+    public List<Student> getStudents(@PathVariable int age) {
         return studentService.getStudentsByAge(age);
     }
 
     @GetMapping("filter")
-    public ResponseEntity<List<Student>> getStudents(@RequestParam int minAge, @RequestParam int maxAge) {
+    public List<Student> getStudents(@RequestParam int minAge, @RequestParam int maxAge) {
         return studentService.findByAgeBetween(minAge, maxAge);
     }
 
     @GetMapping("count-all")
-    public ResponseEntity<Long> getAmountOfAllStudents() {
+    public Long getAmountOfAllStudents() {
         return studentService.getAmountOfAllStudents();
     }
 
     @GetMapping("average-age")
-    public ResponseEntity<Double> getAverageAgeOfAllStudents() {
+    public Double getAverageAgeOfAllStudents() {
         return studentService.getAverageAgeOfAllStudents();
     }
 
     @GetMapping("last5")
-    public ResponseEntity<Collection<Student>> getLastFiveStudents() {
+    public Collection<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
+    }
+
+    @GetMapping("names")
+    public Collection<String> getStudentsNamesByFirstLetter(@RequestParam String chr) {
+        return studentService.getStudentNamesByFirstLetter(chr);
+    }
+
+    @GetMapping("average-age-by-stream")
+    public Double getAverageAgeOfAllStudentsUsingStream() {
+        return studentService.getAverageAgeOfAllStudentsUsingStream();
     }
 }

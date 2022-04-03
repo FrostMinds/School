@@ -53,13 +53,17 @@ public class FacultyController {
     }
 
     @GetMapping("filter/{color}")
-    public ResponseEntity<List<Faculty>> getFaculties(@PathVariable String color) {
+    public List<Faculty> getFaculties(@PathVariable String color) {
         return facultyService.getFacultyByColor(color);
     }
 
     @GetMapping("filter")
-    public ResponseEntity<List<Faculty>>
-    getFacultiesByNameOrColor(@RequestParam String facultyFilter) {
-            return facultyService.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter);
-        }
+    public List<Faculty> getFacultiesByNameOrColor(@RequestParam String facultyFilter) {
+        return  facultyService.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter);
     }
+
+    @GetMapping("max-name")
+    public String getFacultyNameWithMaxLength() {
+        return facultyService.getFacultyNameWithMaxLength();
+    }
+}

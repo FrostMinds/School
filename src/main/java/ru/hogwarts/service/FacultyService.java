@@ -8,7 +8,9 @@ import ru.hogwarts.model.Faculty;
 import ru.hogwarts.repositories.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -49,26 +51,38 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public ResponseEntity<List<Faculty>> getFacultyByColor(String color) {
+    public List<Faculty> getFacultyByColor(String color) {
         logger.info("Faculty color search method has been launched");
         List<Faculty> facultyList = facultyRepository.findByColor(color);
         if (facultyList.isEmpty()) {
             logger.error("Faculty with color {} is missing", color);
-            return ResponseEntity.notFound().build();
+            return null;
         }
         logger.debug("Founded faculties with color={}: {}", color, facultyList);
-        return ResponseEntity.ok(facultyList);
+        return facultyList;
     }
 
-    public ResponseEntity<List<Faculty>> findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(String facultyFilter) {
+    public List<Faculty> findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(String facultyFilter) {
         logger.info("Method to search all faculties with name or color contain {} case insensitive launched", facultyFilter);
         List<Faculty> facultyList = facultyRepository.findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(facultyFilter, facultyFilter);
         if (facultyList.isEmpty()) {
             logger.error("Faculty with name or inclusion color {} case insensitive is missing", facultyFilter);
-            return ResponseEntity.notFound().build();
+            return facultyList;
         }
         logger.debug("List of faculties with name or color containing {} wit ignoring case: {}", facultyFilter, facultyList);
-        return ResponseEntity.ok(facultyList);
+        return facultyList;
+    }
+
+    public String getFacultyNameWithMaxLength() {
+        Collection<Faculty> facultyList = facultyRepository.findAll();
+        Optional<String> maxFacultyName = facultyList.stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparing(String::length));
+        if (maxFacultyName.isEmpty()) {
+            return null;
+        } else {
+            return maxFacultyName.get();
+        }
     }
 
 }
