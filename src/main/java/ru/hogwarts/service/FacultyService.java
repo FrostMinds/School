@@ -51,15 +51,15 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public ResponseEntity<List<Faculty>> getFacultyByColor(String color) {
+    public List<Faculty> getFacultyByColor(String color) {
         logger.info("Faculty color search method has been launched");
         List<Faculty> facultyList = facultyRepository.findByColor(color);
         if (facultyList.isEmpty()) {
             logger.error("Faculty with color {} is missing", color);
-            return ResponseEntity.notFound().build();
+            return null;
         }
         logger.debug("Founded faculties with color={}: {}", color, facultyList);
-        return ResponseEntity.ok(facultyList);
+        return facultyList;
     }
 
     public List<Faculty> findByNameContainingIgnoreCaseOrColorContainingIgnoreCase(String facultyFilter) {
@@ -73,15 +73,15 @@ public class FacultyService {
         return facultyList;
     }
 
-    public ResponseEntity<String> getFacultyNameWithMaxLength() {
+    public String getFacultyNameWithMaxLength() {
         Collection<Faculty> facultyList = facultyRepository.findAll();
         Optional<String> maxFacultyName = facultyList.stream()
                 .map(Faculty::getName)
                 .max(Comparator.comparing(String::length));
         if (maxFacultyName.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return null;
         } else {
-            return ResponseEntity.ok(maxFacultyName.get());
+            return maxFacultyName.get();
         }
     }
 

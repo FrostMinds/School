@@ -50,48 +50,48 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public ResponseEntity<List<Student>> getStudentsByAge(int age) {
+    public List<Student> getStudentsByAge(int age) {
         logger.info("The method of obtaining students by age launched");
         List<Student> studentList = studentRepository.findByAge(age);
         if (studentList.isEmpty()) {
             logger.error("There is no student with age={}", age);
-            return ResponseEntity.notFound().build();
+            return null;
         }
         logger.debug("Founded students by age={}: {}", age, studentList);
-        return ResponseEntity.ok(studentList);
+        return studentList;
     }
 
-    public ResponseEntity<List<Student>> findByAgeBetween(int minAge, int maxAge) {
+    public List<Student> findByAgeBetween(int minAge, int maxAge) {
         logger.info("Method to search student by age between {} and {} started", minAge, maxAge);
         List<Student> studentList = studentRepository.findByAgeBetween(minAge, maxAge);
         if (studentList.isEmpty()) {
             logger.error("There is no students with age between {} and {}", minAge, maxAge);
-            return ResponseEntity.notFound().build();
+            return null;
         }
         logger.debug("List of students with age between {} and {} : {}", minAge, maxAge, studentList);
-        return ResponseEntity.ok(studentList);
+        return studentList;
     }
 
-    public ResponseEntity<Long> getAmountOfAllStudents() {
+    public Long getAmountOfAllStudents() {
         logger.info("The method to get the sum of all students has been launched ");
-        return ResponseEntity.ok(studentRepository.getAmountOfAllStudents());
+        return studentRepository.getAmountOfAllStudents();
     }
 
-    public ResponseEntity<Double> getAverageAgeOfAllStudents() {
+    public Double getAverageAgeOfAllStudents() {
         logger.info("Method for obtaining the average age of students launched");
-        return ResponseEntity.ok(studentRepository.getAverageAgeOfAllStudents());
+        return studentRepository.getAverageAgeOfAllStudents();
     }
 
-    public ResponseEntity<Collection<Student>> getLastFiveStudents() {
+    public Collection<Student> getLastFiveStudents() {
         logger.info("The method to get the last five students is launched");
         Long amount = studentRepository.getAmountOfAllStudents();
         Collection<Student> studentList = studentRepository.getLastFiveStudents(amount);
         if (studentList.isEmpty()) {
             logger.error("The list of students is empty");
-            return ResponseEntity.notFound().build();
+            return null;
         }
         logger.debug("List of last five added students: {}", studentList);
-        return ResponseEntity.ok(studentList);
+        return studentList;
     }
 
     public Collection<String> getStudentNamesByFirstLetter(String chr) {
@@ -106,14 +106,14 @@ public class StudentService {
                 collect(Collectors.toList());
     }
 
-    public ResponseEntity<Double> getAverageAgeOfAllStudentsUsingStream() {
+    public Double getAverageAgeOfAllStudentsUsingStream() {
         return studentRepository.findAll().
                 stream().
                 mapToInt(Student::getAge).
                 average().
                 stream().
-                mapToObj(ResponseEntity::ok).
+                mapToObj(Double::new).
                 findFirst().
-                orElse(ResponseEntity.notFound().build());
+                orElse(null);
     }
 }

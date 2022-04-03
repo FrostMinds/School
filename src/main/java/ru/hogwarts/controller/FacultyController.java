@@ -53,7 +53,7 @@ public class FacultyController {
     }
 
     @GetMapping("filter/{color}")
-    public ResponseEntity<List<Faculty>> getFaculties(@PathVariable String color) {
+    public List<Faculty> getFaculties(@PathVariable String color) {
         return facultyService.getFacultyByColor(color);
     }
 
@@ -63,7 +63,7 @@ public class FacultyController {
     }
 
     @GetMapping("max-name")
-    public ResponseEntity<String> getFacultyNameWithMaxLength() {
+    public String getFacultyNameWithMaxLength() {
         return facultyService.getFacultyNameWithMaxLength();
     }
 }

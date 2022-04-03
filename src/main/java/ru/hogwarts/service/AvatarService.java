@@ -74,14 +74,14 @@ public class AvatarService {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public ResponseEntity<Collection<Avatar>> getAll(Integer pageNumber, Integer pageSize) {
+    public Collection<Avatar> getAll(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         Collection<Avatar> avatarsList = avatarRepository.findAll(pageRequest).getContent();
         if (avatarsList.isEmpty()) {
             logger.error("There is no avatars at all");
-            return ResponseEntity.notFound().build();
+            return null;
         }
         logger.debug("List of all avatars (page number= {}, page size={}): {}", avatarsList, pageNumber, pageSize);
-        return ResponseEntity.ok(avatarsList);
+        return avatarsList;
     }
 }
